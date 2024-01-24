@@ -35,6 +35,7 @@ ip = socket.gethostbyname(ip) #domain go ip
 port = int(input('Port/t = '))
 times = int(input('Time/t = '))
 th = int(input('Thread/t = '))
+choice = input("Enter 'y' or 'n': ")
 os.system('cls' if os.name == 'nt' else 'clear')
 def randomip():
     randip1 = random.randint(3,255)
