@@ -117,9 +117,9 @@ def stdsender(ip, times):
 
 for y in range(th):
     if choice == 'y':
-       threading.Thread(target=start).start()
-       threading.Thread(target=randsender).start()
-       threading.Thread(target=stdsender).start()
+       threading.Thread(target=start, args=(ip,port,times)).start()
+       threading.Thread(target=randsender,args=(ip,port,times)).start()
+       threading.Thread(target=stdsender,args=(ip,port,times)).start()
     else:
-       threading.Thread(target=start).start()
-       threading.Thread(target=randsender).start()
+       threading.Thread(target=start,args=(ip,port,times)).start()
+       threading.Thread(target=randsender,args=(ip,port,times)).start()
