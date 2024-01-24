@@ -32,9 +32,9 @@ acceptall=["Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=
 "Accept-Language: en-US,en;q=0.5\r\n"]
 ip = str(input('Target/t = '))
 ip = socket.gethostbyname(ip) #domain go ip
-port = port(int('Port/t = '))
-times = times(int('Time/t = '))
-th = th(int('Thread/t = '))
+port = int(input('Port/t = '))
+times = int(input('Time/t = '))
+th = int(input('Thread/t = '))
 os.system('cls' if os.name == 'nt' else 'clear')
 def randomip():
     randip1 = random.randint(3,255)
