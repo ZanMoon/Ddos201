@@ -1,8 +1,13 @@
 import socket, struct, codecs, sys, threading, random, time, os, argparse
 
 proxys = open('proxy.txt').readlines()
-
+bot1 = open('SOCKS4.txt').readlines()
+bot2 = open('SOCKS5.txt').readlines()
+bot3 = open('ua.txt').readlines()
 bots = len(proxys)
+bots2 = len(bot1)
+bots3 = len(bot2)
+bots4 = len(bot3)
 
 # // Argparse
 ap = argparse.ArgumentParser()
