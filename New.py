@@ -64,7 +64,7 @@ def spoof():
           except:
               sock.close()
     
-for _ in range(th):
+for y in range(th):
     thred = threading.Thread(target=spoof)
     thred.start()
      
