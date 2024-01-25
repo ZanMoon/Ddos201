@@ -48,7 +48,7 @@ def spoof():
     UserAgent = "Useragent: "+random.choice(useragents)+random.choice(ref)+"\r\n"
     reffer = "RefTo: "+random.choice(ref)+"\r\n"
     acceptall = "AcceptAll: "+random.choice(acceptall)+random.choice(ref)
-    bypass_user = UserAgent + reffer + acceptAll + "\r\n"
+    bypass_user = UserAgent + reffer + acceptall + "\r\n"
     return byte1
     return byte2
     timeout = time.time() + float(times)
