@@ -43,7 +43,7 @@ os.system('cls' if os.name == 'nt' else 'clear')
 def spoof():
     global byte1, byte2, pack, pack2, msg
     global useragents, ref, acceptall
-    byte1 = random._uradom(1024)
+    byte1 = random._urandom(1024)
     byte2 = random._urandom(666)
     UserAgent = "Useragent: "+random.choice(useragents)+random.choice(ref)+"\r\n"
     reffer = "RefTo: "+random.choice(ref)+"\r\n"
