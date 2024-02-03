@@ -1,4 +1,5 @@
 
+
 import random
 import time
 import socket 
@@ -3717,6 +3718,7 @@ for x in range(20000):
                      a.sendall(str.encode(request))
                      a.sendall(str.encode(request))
                    except:
+                         time.sleep(5000)
                          a.close()
            
            
