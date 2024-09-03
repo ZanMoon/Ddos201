@@ -3,7 +3,7 @@ const fs = require('fs');
 const axios = require('axios');
 
 // Load proxy list from file
-const proxies = fs.readFileSync('header.txt', 'utf-8').toString().trim().split('\n');
+const proxies = fs.readFileSync('Proxy.txt', 'utf-8').toString().trim().split('\n');
 
 // API endpoint and request parameters
 const apiEndpoint = 'http://170.64.166.87:8080/api/start-attack'; // Adjust the URL if necessary
