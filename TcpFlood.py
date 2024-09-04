@@ -15202,6 +15202,6 @@ def get_random_sock4():
 
 for _ in range(num_threads):
     thread = threading.Thread(target=start)
-    thread2 = threading.Threading(target=tcp_flooder)
+    thread2 = threading.Thread(target=tcp_flooder)
     thread.start()
     thread2.start()
