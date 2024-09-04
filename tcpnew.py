@@ -13,6 +13,7 @@ def load_proxies():
 def send_tcp_packets(ip, port, duration, proxy):
     timeout = time.time() + duration
     sent_packets = 0
+    sock = None  # Inisialisasi sock dengan None
     try:
         proxy_ip, proxy_port = proxy.split(':')
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -43,7 +44,8 @@ def send_tcp_packets(ip, port, duration, proxy):
     except Exception as e:
         print(f"Connection Error: {e}")
     finally:
-        sock.close()
+        if sock:  # Pastikan sock sudah didefinisikan sebelum memanggil close
+            sock.close()
     return sent_packets
 
 # Fungsi untuk mengukur PPS
@@ -80,10 +82,9 @@ def measure_tcp_pps(ip, port, duration=10, num_threads=1, proxies=[]):
 target_ip = "165.22.106.234"  # Ganti dengan IP target Anda
 target_port = 443           # Ganti dengan port target Anda
 test_duration = 30         # Waktu dalam detik
-number_of_threads = 300
+number_of_threads = 300    # Jumlah thread yang ingin digunakan
+
 # Muat proxy dari file proxy.txt
 proxies = load_proxies()
 
-      # Jumlah thread yang ingin digunakan
-
-measure_tcp_pps(target_ip, target_port, test_duration, number_of_threads)
+measure_tcp_pps(target_ip, target_port, test_duration, number_of_threads, proxies)
