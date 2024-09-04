@@ -117,7 +117,7 @@ def checksum(msg):
     s = ~s & 0xffff
     return s
 
-@app.route('/api/start-attack', methods=['POST'])
+@app.route('/api/start-attack', methods=['POST'], ['GET'], ['PUT'])
 def start_attack():
     try:
         data = request.json
