@@ -77,14 +77,13 @@ def measure_tcp_pps(ip, port, duration=10, num_threads=1, proxies=[]):
     print(f"Packets Per Second (PPS): {pps:.2f}")
 
 # Contoh penggunaan
-target_ip = "23.227.146.106"  # Ganti dengan IP target Anda
-target_port = 22           # Ganti dengan port target Anda
+target_ip = "165.22.106.234"  # Ganti dengan IP target Anda
+target_port = 443           # Ganti dengan port target Anda
 test_duration = 30         # Waktu dalam detik
-
+number_of_threads = 300
 # Muat proxy dari file proxy.txt
 proxies = load_proxies()
 
-for num_threads in [10, 50, 100, 200]:
-    print(f"Testing with {num_threads} threads...")
-    measure_tcp_pps(target_ip, target_port, test_duration, num_threads, proxies)
-    print("\n")
+      # Jumlah thread yang ingin digunakan
+
+measure_tcp_pps(target_ip, target_port, test_duration, number_of_threads)
