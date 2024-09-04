@@ -77,7 +77,7 @@ def measure_tcp_pps(ip, port, duration=10, num_threads=1, proxies=[]):
     print(f"Packets Per Second (PPS): {pps:.2f}")
 
 # Contoh penggunaan
-target_ip = "168.119.255.140"  # Ganti dengan IP target Anda
+target_ip = "23.227.146.106"  # Ganti dengan IP target Anda
 target_port = 22           # Ganti dengan port target Anda
 test_duration = 30         # Waktu dalam detik
 
